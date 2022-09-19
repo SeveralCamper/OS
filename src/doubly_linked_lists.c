@@ -1,88 +1,103 @@
 #include "doubly_linked_lists.h"
 
 
-list_t* create_list() {
-    list_t *tmp = (list_t*) malloc(sizeof(list_t));
-    if (tmp == NULL) {
+list_t *create_list() {
+    list_t *new_list = (list_t*)malloc(sizeof(list_t));
+    if (new_list == NULL) {
         printf("Error: Bad allocation!\n");
     } else {
-        tmp->size = 0;
-        tmp->head = tmp->tail = NULL;      
+        new_list->head = new_list->tail = NULL;
+        new_list->size = 0;
     }
- 
-    return tmp;
-}
 
+    return new_list;
+}
 
 void delete_list(list_t *list) {
-    if (list->head == NULL) {
+    if (list == NULL) {
         printf("Error: List is also freed!\n");
+    } else {
+        node_t *tmp = list->tail;
+        while(list->head != NULL) {
+            list->tail = list->tail->prev;
+            free(tmp);
+            tmp = list->tail;
+        }
+        free(list);
+        list = NULL;
     }
-    node_t *tmp = list->head;
-    node_t *next = NULL;
-    while (tmp) {
-        next = tmp->next;
-        free(tmp);
-        tmp = next;
-    }
-    free(list);
-    list = NULL;
 }
 
-void push_back(list_t *list, char *name_new, int *grades_new) {
-    node_t *tmp = (node_t*) malloc(sizeof(node_t));
+char *copy_names(char *name, int name_size) {
+    char* new_name = (char*)malloc(sizeof(char) * name_size);
+    for (int i = 0; i < name_size; i++) {
+        new_name[i] = name[i];
+    }
+
+    return new_name;
+}
+
+int *copy_grades(int *grades, int grades_size) {
+    int* new_grades = (int*)malloc(sizeof(int) * grades_size);
+    for (int i = 0; i < grades_size; i++) {
+        new_grades[i] = grades[i];
+    }
+
+    return new_grades;
+}
+
+void push_back(list_t *list, char *name_new, int *grades_new, int name_size, int grades_size) {
+    node_t *tmp = (node_t*)malloc(sizeof(node_t));
     if (tmp == NULL) {
         printf("Error: Bad allocation!\n");
     } else {
-        tmp->name = name_new, tmp->grades = grades_new;
+        tmp->name = copy_names(name_new, name_size);
+        tmp->grades = copy_grades(grades_new, grades_size);
         tmp->next = NULL, tmp->prev = list->tail;
-        if (list->tail) {
-            list->tail->next = tmp;
-        }
-        list->tail = tmp;
-
         if (list->head == NULL) {
-            list->head = tmp;
+            list->head = list->tail = tmp;
+        } else {
+            list->tail = tmp;
         }
         list->size++;
     }
 }
 
 void pop_back(list_t *list) {
-    if (list->tail == NULL) {
-        printf("Error: List is also empty!\n");
-    } else {
-        node_t *tmp;
-        tmp = list->tail;
-        list->tail = list->tail->prev;
-        if (list->tail) {
-            list->tail->next = NULL;
-        }
 
-        if(tmp == list->head) {
-            list->head = NULL;
-        }
-        free(tmp);
-        list->size--;
-    }
 }
 
-int main() {
-    list_t* new_list = create_list();
-    int *arr = (int*) malloc(sizeof(int) * 10);
-    for (int i = 0; i < 10; i++) {
-        arr[i] = i + 1;
-    }
-    for (int i = 0; i < 10; i++) {
-        push_back(new_list, "ABCDEF", arr);
-        printf("%s\n\n", new_list->head->name);
-        for (int j = 0; j < 10; j++) {
-            if (j == 9) {
-                printf("%d\n", new_list->head->grades[j]);
-            } else {
-                printf("%d ", new_list->head->grades[j]);
+void print_list(list_t *list, int grades_size) {
+    if (list == NULL) {
+        printf("List is empty!\n");
+    } else {
+        list_t *p;
+        p = list;
+        while(p->head != NULL) {
+            printf("%s\n", p->head->name);
+            for (int i = 0; i < grades_size; i++) {
+                if (i == grades_size - 1) {
+                    printf("%d\n", p->head->grades[i]);
+                } else {
+                    printf("%d ", p->head->grades[i]);
+                }
             }
+            p->head = p->head->next;
         }
     }
+} 
 
+int main() {
+    list_t *list = create_list();
+    int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    int count = 0;
+    for (int i = 0; i < 1000; i++) {
+        push_back(list, "ABCDE", arr, 5, 10);
+        for (int j = 0; j < 10; j++) {
+            arr[j] = count + i;
+            count++;
+        }
+        print_list(list, 10);
+    }
+    return 0;
 }

@@ -1,5 +1,5 @@
 CC = gcc -std=c11
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = 
 LIBS = -lcheck -lsubunit -lrt -lpthread -lm
 TARGET = ../bin/doubly_linked_lists
 
@@ -17,6 +17,7 @@ run:
 clean:	
 	rm -rf $(TARGET)
 	rm -rf *.o *.so *.a fizz *.gc* *.info report *.out *.gcda *.so *.gcno *.info
+	rm -rf obj/*.o obj/*.so obj/*.a obj/fizz obj/*.gc* obj/*.info obj/report obj/*.out obj/*.gcda obj/*.so obj/*.gcno obj/*.info
 
 rebuild: clean all
 

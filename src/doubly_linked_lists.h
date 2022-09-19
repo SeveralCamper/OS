@@ -20,10 +20,10 @@ typedef struct list {
     node_t *tail; 
 } list_t;
 
-list_t* create_list();
+list_t *create_list();
 
 void pop_back(list_t *list);
-void push_back(list_t *list, char *name_new, int *grades_new);
+void push_back(list_t *list, char *name_new, int *grades_new, int name_size, int grades_size) ;
 
 void delete_list(list_t *list);
 
