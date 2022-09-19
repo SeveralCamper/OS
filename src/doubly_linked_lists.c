@@ -14,7 +14,7 @@ list_t *create_list() {
 }
 
 void delete_list(list_t *list) {
-    if (list == NULL) {
+    if (list->head == NULL) {
         printf("Error: List is also freed!\n");
     } else {
         node_t *tmp = list->tail;
@@ -127,7 +127,7 @@ void pop_front(list_t *list) {
 }
 
 void print_list(list_t *list, int grades_size) {
-    if (list == NULL) {
+    if (list->head == NULL) {
         printf("List is empty!\n");
     } else {
         node_t *p = list->head;
@@ -149,7 +149,7 @@ void print_list(list_t *list, int grades_size) {
 
 void delete_node(list_t *list, int position) {
 	if (position < 0 || !list->head) {
-        printf("Error: List is also empty ot position below nil");
+        printf("Error: List is also empty ot position below nil\n");
 	} else {
         int current_item_index = 0;
         node_t *tmp = list->head;
@@ -173,6 +173,42 @@ void delete_node(list_t *list, int position) {
             free(tmp);
         }
     }
+}
+
+
+node_t* get_index_node(list_t *list, int index) {
+    node_t *tmp = NULL;
+    if (list->head == NULL) {
+        printf("Error: List is empty!\n");
+    } else {
+        int i;
+        
+        if (index < list->size/2) {
+            i = 0;
+            tmp = list->head;
+            while (tmp && i < index) {
+                tmp = tmp->next;
+                i++;
+            }
+        } else {
+            i = list->size - 1;
+            tmp = list->tail;
+            while (tmp && i > index) {
+                tmp = tmp->prev;
+                i--;
+            }
+        }
+    }
+ 
+    return tmp;
+}
+
+node_t search_node_name(list_t *list, char* name) {
+
+}
+
+node_t search_node_grades(list_t *list, int* grades) {
+    
 }
 
 int main() {

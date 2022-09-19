@@ -22,6 +22,8 @@ typedef struct list {
 
 list_t *create_list();
 
+node_t* get_index_node(list_t *list, int index);
+
 void pop_back(list_t *list);
 void pop_front(list_t *list);
 void delete_list(list_t *list);
