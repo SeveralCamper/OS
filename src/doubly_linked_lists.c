@@ -64,6 +64,24 @@ void push_back(list_t *list, char *name_new, int *grades_new, int name_size, int
     }
 }
 
+void push_front(list_t *list, char *name_new, int *grades_new, int name_size, int grades_size) {
+    node_t *tmp = (node_t*)malloc(sizeof(node_t));
+    if (tmp == NULL) {
+        printf("Error: Bad allocation!\n");
+    } else {
+        tmp->name = copy_names(name_new, name_size);
+        tmp->grades = copy_grades(grades_new, grades_size);
+        tmp->next = list->head, tmp->prev = NULL;
+        if (list->head == NULL) {
+            list->head = list->tail = tmp;
+        } else {
+            list->head->prev = tmp;
+            list->head = tmp;
+        }
+        list->size++;
+    }
+}
+
 void pop_back(list_t *list) {
     if (list->head == NULL) {
         printf("Error: List is also empty!\n");
@@ -79,6 +97,28 @@ void pop_back(list_t *list) {
             }
             if (tmp == list->head) {
                 list->head = NULL;
+            }
+            free(tmp);
+        }
+        list->size--;
+    }
+}
+
+void pop_front(list_t *list) {
+    if (list->head == NULL) {
+        printf("Error: List is also empty!\n");
+    } else {
+        node_t *tmp = (node_t*)malloc(sizeof(node_t));
+        if (tmp == NULL) {
+            printf("Error: Bad allocation!\n");
+        } else {
+            tmp = list->head;
+            list->head = list->head->next;
+            if (list->head) {
+                list->head->prev = NULL;
+            }
+            if (tmp == list->tail) {
+                list->tail = NULL;
             }
             free(tmp);
         }
@@ -111,6 +151,7 @@ int main() {
     list_t *list = create_list();
     int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     int count = 0;
+    printf("!!! PART I: PUSH BACK\n");
     for (int i = 0; i < 10; i++) {
         push_back(list, "ABCDE", arr, 5, 10);
         printf("\n");
@@ -122,11 +163,32 @@ int main() {
         }
     }  
 
+    printf("!!! PART II: POP BACK\n");
     for (int i = 0; i < 10; i++) {
         pop_back(list);
         printf("\n");
         print_list(list, 10);
         printf("\n");
     }
+
+    printf("!!! PART III: PUSH FRONT\n");
+    for (int i = 0; i < 10; i++) {
+        push_front(list, "ABCDE", arr, 5, 10);
+        printf("\n");
+        print_list(list, 10);
+        printf("\n");
+        for (int j = 0; j < 10; j++) {
+            arr[j] = count + i;
+            count++;
+        }
+    }  
+
+    printf("!!! PART IV: POP FRONT\n");
+    for (int i = 0; i < 10; i++) {
+        pop_front(list);
+        printf("\n");
+        print_list(list, 10);
+        printf("\n");
+    }   
     return 0;
 }
