@@ -145,7 +145,35 @@ void print_list(list_t *list, int grades_size) {
             count++;
         }
     }
-} 
+}
+
+void delete_node(list_t *list, int position) {
+	if (position < 0 || !list->head) {
+        printf("Error: List is also empty ot position below nil");
+	} else {
+        int current_item_index = 0;
+        node_t *tmp = list->head;
+        for (int i = 0; tmp != NULL && i < position; i++) {
+            tmp = tmp->next;
+        }
+        if (tmp == NULL) {
+            printf("Error: Go out from size!\n");
+        } else {
+            if (list->head == tmp) {
+                list->head = tmp->next;
+            }
+        
+            if (tmp->next != NULL) {
+                tmp->next->prev = tmp->prev;
+            }
+        
+            if (tmp->prev != NULL) {
+                tmp->prev->next = tmp->next;
+            }   
+            free(tmp);
+        }
+    }
+}
 
 int main() {
     list_t *list = create_list();
@@ -190,5 +218,20 @@ int main() {
         print_list(list, 10);
         printf("\n");
     }   
+
+    printf("!!! PART V: DELETE ELEMENT\n");
+    count = 0;
+    for (int i = 0; i < 10; i++) {
+        push_back(list, "ABCDE", arr, 5, 10);
+        for (int j = 0; j < 10; j++) {
+            arr[j] = count + i;
+            count++;
+        }
+    }
+    print_list(list, 10);
+    printf("\n");
+    delete_node(list, 4);
+    printf("\n");
+    print_list(list, 10);
     return 0;
 }
