@@ -23,9 +23,16 @@ typedef struct list {
 list_t *create_list();
 
 void pop_back(list_t *list);
-void push_back(list_t *list, char *name_new, int *grades_new, int name_size, int grades_size) ;
+void pop_front(list_t *list);
+void print_list(list_t *list, int grades_size);
+void push_back(list_t *list, char *name_new, int *grades_new, int name_size, int grades_size);
+void push_front(list_t *list, char *name_new, int *grades_new, int name_size, int grades_size);
 
 void delete_list(list_t *list);
+
+char *copy_names(char *name, int name_size);
+
+int *copy_grades(int *grades, int grades_size)
 
 #endif //  SRC_DOUBLY_LINKED_LISTS_H_
 
