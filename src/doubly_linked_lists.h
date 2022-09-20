@@ -22,7 +22,9 @@ typedef struct list {
 
 list_t *create_list();
 
-node_t* get_index_node(list_t *list, int index);
+node_t *search_node_name(list_t *list, char* name);
+node_t *search_node_name(list_t *list, char* name_key, int size);
+node_t *search_node_grades(list_t *list, int* grades_key, int size);
 
 void pop_back(list_t *list);
 void pop_front(list_t *list);
@@ -35,6 +37,8 @@ void push_front(list_t *list, char *name_new, int *grades_new, int name_size, in
 char *copy_names(char *name, int name_size);
 
 int *copy_grades(int *grades, int grades_size);
+int equal_node_name(list_t *list, char* name_key, int size);
+int equal_node_grades(list_t *list, int* grades_key, int size);
 
 #endif //  SRC_DOUBLY_LINKED_LISTS_H_
 

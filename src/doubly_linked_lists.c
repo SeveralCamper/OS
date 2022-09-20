@@ -176,7 +176,7 @@ void delete_node(list_t *list, int position) {
 }
 
 
-node_t* get_index_node(list_t *list, int index) {
+node_t *get_node_from_index(list_t *list, int index) {
     node_t *tmp = NULL;
     if (list->head == NULL) {
         printf("Error: List is empty!\n");
@@ -203,12 +203,64 @@ node_t* get_index_node(list_t *list, int index) {
     return tmp;
 }
 
-node_t search_node_name(list_t *list, char* name) {
+node_t *search_node_name(list_t *list, char* name_key, int size) {
+    node_t *tmp = NULL;
+    if (list->head == NULL) {
+        printf("Error: List is empty!\n");
+    } else {
+    tmp = list->head;
+        while (tmp && equal_node_name(tmp, name_key, size) != 1) {
+            tmp = tmp->next;
+        }
+    }
 
+    return tmp;
 }
 
-node_t search_node_grades(list_t *list, int* grades) {
-    
+node_t *search_node_grades(list_t *list, int* grades_key, int size) {
+    node_t *tmp = NULL;
+    if (list->head == NULL) {
+        printf("Error: List is empty!\n");
+    } else {
+    tmp = list->head;
+        while (tmp && equal_node_grades(tmp, grades_key, size) != 1) {
+            tmp = tmp->next;
+        }
+    }
+
+    return tmp;    
+}
+
+int equal_node_name(node_t *node, char* name_key, int size) {
+    int res = 1;
+    if (node == NULL) {
+        printf("Error: node is empty!\n");
+    } else {
+        for(int i = 0; i < size; i++) {
+            if (node->name[i] == name_key[i]) {
+                res = 0;
+                break;
+            }
+        }
+    }
+
+    return res;
+}
+
+int equal_node_grades(node_t *node, int* grades_key, int size) {
+    int res = 1;
+    if (node == NULL) {
+        printf("Error: node is empty!\n");
+    } else {
+        for(int i = 0; i < size; i++) {
+            if (node->grades [i] == grades_key[i]) {
+                res = 0;
+                break;
+            }
+        }
+    }
+
+    return res;
 }
 
 int main() {
@@ -269,5 +321,10 @@ int main() {
     delete_node(list, 4);
     printf("\n");
     print_list(list, 10);
+    printf("\n");
+
+    printf("!!! PART VI: GET ELEMENT\n");
+    printf("%s\n", get_node_from_index(list, 5)->name);
+    printf("\n");
     return 0;
 }
