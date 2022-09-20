@@ -209,7 +209,7 @@ node_t *search_node_name(list_t *list, char* name_key, int size) {
         printf("Error: List is empty!\n");
     } else {
     tmp = list->head;
-        while (tmp && equal_node_name(tmp, name_key, size) != 1) {
+        while (tmp && equal_node_name(tmp, name_key, size) == 1) {
             tmp = tmp->next;
         }
     }
@@ -223,7 +223,7 @@ node_t *search_node_grades(list_t *list, int* grades_key, int size) {
         printf("Error: List is empty!\n");
     } else {
     tmp = list->head;
-        while (tmp && equal_node_grades(tmp, grades_key, size) != 1) {
+        while (tmp && equal_node_grades(tmp, grades_key, size) == 1) {
             tmp = tmp->next;
         }
     }
@@ -326,5 +326,16 @@ int main() {
     printf("!!! PART VI: GET ELEMENT\n");
     printf("%s\n", get_node_from_index(list, 5)->name);
     printf("\n");
+
+    int arr_new[10] = {44, 45, 46, 47, 48, 49, 50, 51, 52, 53};
+    node_t *new_node = search_node_grades(list, arr_new, 10);
+    for (int i = 0; i < 10; i++) {
+        if (i == 10 - 1) {
+            printf("%d\n", new_node->grades[i]);
+        } else {
+            printf("%d ", new_node->grades[i]);
+        }
+    }
+
     return 0;
 }
