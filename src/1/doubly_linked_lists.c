@@ -1,5 +1,6 @@
 #include "doubly_linked_lists.h"
 
+#define FILE_NAME "file.bin"
 
 list_t *create_list() {
     list_t *new_list = (list_t*)malloc(sizeof(list_t));
@@ -151,7 +152,6 @@ void delete_node(list_t *list, int position) {
 	if (position < 0 || !list->head) {
         printf("Error: List is also empty ot position below nil\n");
 	} else {
-        int current_item_index = 0;
         node_t *tmp = list->head;
         for (int i = 0; tmp != NULL && i < position; i++) {
             tmp = tmp->next;
@@ -183,7 +183,7 @@ node_t *get_node_from_index(list_t *list, int index) {
     } else {
         int i;
         
-        if (index < list->size/2) {
+        if ((size_t)index < list->size/2) {
             i = 0;
             tmp = list->head;
             while (tmp && i < index) {
@@ -263,6 +263,79 @@ int equal_node_grades(node_t *node, int* grades_key, int size) {
     return res;
 }
 
+
+
+void serialize(list_t *list) {
+    node_t *tmp_node = list->head;
+	FILE *file = fopen(FILE_NAME, "wb");
+	if (!list) {
+		printf("Error: List is empty!\n");
+	} else {
+        if (file == NULL) {
+            printf("Error: Can't open the file!\n");
+        } else {
+            node_t *buffer = calloc(10, sizeof(node_t));
+            int i = 0;
+            while(tmp_node != NULL) {
+                node_t student_to_copy = *tmp_node;
+                student_to_copy.next = NULL;
+                student_to_copy.prev = NULL;
+                buffer[i] = student_to_copy;
+                tmp_node = tmp_node->next;
+                i++;
+            }
+            fwrite(buffer, sizeof(node_t), 10, file);
+            printf("SERIALIZE SUCCSESS!\n");
+        }
+
+        fclose(file);
+    }
+}
+
+node_t *clone(node_t *student_to_copy) {
+	node_t *new_student = calloc(1, sizeof(list_t));
+	strcpy(new_student->name, student_to_copy->name);
+	for(int i = 0; i < 10; i++) {
+		new_student->grades[i] = student_to_copy->grades[i];
+	}
+	return new_student;
+}
+
+void insert_item(list_t *list, node_t *new_node) {
+    if (list->head == NULL) {
+        list->head = new_node;
+    } else {
+		node_t *tmp = list->head;
+		while (tmp->next != NULL) {
+			tmp = tmp->next;
+		}
+        tmp->next = new_node;
+        tmp->next->prev = tmp;
+    }
+}
+
+void deserialize(list_t *list) {
+    delete_list(list);
+	FILE *file = fopen(FILE_NAME, "rb");
+	if (file == NULL) {
+		printf("Error: Can't open the file!\n");
+	} else {
+        fseek(file, 0L, SEEK_END);
+        unsigned int file_size = ftell(file);
+        rewind(file);
+
+        node_t *tmp = malloc(file_size);
+        fread(&*tmp, file_size, 1, file);
+        
+        unsigned int iterations = file_size / sizeof(node_t);
+        for (int i = 0; i < (int)iterations; i++) {
+            insert_item(list, clone(&tmp[i]));
+        }
+
+        fclose(file);
+    }
+}
+
 int main() {
     list_t *list = create_list();
     int arr[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
@@ -336,6 +409,11 @@ int main() {
             printf("%d ", new_node->grades[i]);
         }
     }
+
+    printf("PART VII: SERIALIZE\n");
+    serialize(list);
+    printf("PART VIII: DESERIALIZE\n");
+    print_list(list, 10);
 
     return 0;
 }

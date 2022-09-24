@@ -1,10 +1,11 @@
 #ifndef SRC_DOUBLY_LINKED_LISTS_H_
 #define SRC_DOUBLY_LINKED_LISTS_H_
 
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/time.h>
-#include <time.h>
 
 
 typedef struct node {
