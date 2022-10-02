@@ -12,12 +12,12 @@ int main() {
     // Lab. 1 part
     // For test cases run without -Werror
 
-    /* pid_t child_pid;
+    // pid_t child_pid;
     
     // First test
-    pid_t parent_pid;
+    /*pid_t parent_pid;
     int i = 0;
-    fprintf(stdout, "Defore REACTION %i\n", parent_pid=(int)getpid());
+    fprintf(stdout, "Before REACTION %i\n", parent_pid=(int)getpid());
 
     child_pid = fork();
 
@@ -49,7 +49,7 @@ int main() {
     /* pid_t child_pid;
     pid_t parent_pid;
 
-    fprintf(stdout, "Defore REACTION %i\n", parent_pid=(int)getpid());
+    fprintf(stdout, "Before REACTION %i\n", parent_pid=(int)getpid());
 
     child_pid = fork();
     if (child_pid != 0) {
