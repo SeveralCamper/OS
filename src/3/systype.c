@@ -62,17 +62,14 @@ int main() {
 
     // Lab. 3 part
 
-    int i;
-    int j;
-
     pid_t ppid;
     ppid = getpid();
     printf("I'm the parent, my PID is: %d\n", ppid);
-    for (i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++) {
         ppid = fork();
         if (ppid == 0) {
             printf("Hello, my PID is: %d, my parent's PID is %d\n", getpid(), getppid());
-            for(j = 0; j < 2; j++) {
+            for(int j = 0; j < 2; j++) {
                 ppid = fork();
                 if (ppid == 0) {
                     printf("Hello, my PID is: %d, my parent's PID is %d\n", getpid(), getppid());
