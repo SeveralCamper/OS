@@ -29,12 +29,6 @@ char *enter_PID_process(int pid) {
 		i++;
 
 	}
-
-	for (int j = 0; j < i; j++) {
-		printf("%c\n", comand[j]);
-	}
-
-	printf("DDDD %s\n", comand);
 	
 	return comand;
 }
@@ -48,8 +42,8 @@ void API_contract() {
 	printf("2) Check all process in directory\n");
 	printf("3) Check procces by PID\n");
 	printf("4) Generate new process\n");
-	printf("5) \n");
-	printf("6) \n");
+	printf("5) Show process tree with PID\n");
+	printf("6) Launching a Third Party Program\n");
 	printf("0) Exit.\n");
 	while (1) {
 		if (scanf("%d%c", &API_flag, &c) == 2 && (API_flag > -1 && API_flag < 7) && (c == '\n') && (c != EOF)) {
@@ -59,10 +53,12 @@ void API_contract() {
 					case 1: 
 						printf("All running process:\n");
 						system("ps -e");
+						fflush(NULL);
 						break;
 					case 2:
 						printf("All procces in directory:\n");
 						system("ps -T");
+						fflush(NULL);
 						break;
 					case 3:
 						pid = 1;
@@ -101,10 +97,16 @@ void API_contract() {
 						pid_1 = fork();
 						printf("Add new process:\n");
 						printf("New procces PID is %i\n", pid_1 = (int)getpid());
+						fflush(NULL);
 						break;
 					case 5:
+						printf("Procces tree:\n");
+						system("pstree -p");
+						fflush(NULL);
 						break;
 					case 6:
+						printf("Launching a Third Party Program:\n");
+						system("make run_child");
 						break;
 				}		
 				fflush(NULL);
@@ -113,8 +115,8 @@ void API_contract() {
 				printf("2) Check all process in directory\n");
 				printf("3) Check procces by PID\n");
 				printf("4) Generate new process\n");
-				printf("5) \n");
-				printf("6) \n");
+				printf("5) Show process tree with PID\n");
+				printf("6) Launching a Third Party Program\n");
 				printf("0) Exit.\n");
 			} else {
 				printf("\033c");
