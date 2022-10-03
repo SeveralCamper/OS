@@ -1,4 +1,4 @@
-CC = gcc -std=c11
+CC = gcc -std=c17
 CFLAGS = -Wall -Werror -Wextra
 LIBS = -lcheck -lsubunit -lrt -lpthread -pthread -lm
 TARGET = ../../bin/systype
