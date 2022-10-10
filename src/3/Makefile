@@ -1,5 +1,5 @@
 CC = gcc -std=c11
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Wextra
 LIBS = -lcheck -lsubunit -lrt -lpthread -lm
 TARGET = ../../bin/systype
 

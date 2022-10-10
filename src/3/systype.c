@@ -9,12 +9,12 @@ void reaction() {
 }
 
 int main() {
-    // Lab. 1 part
+    // Lab. 1 part !
     // For test cases run without -Werror
 
-    // pid_t child_pid;
-    
-    // First test
+    //pid_t child_pid;
+
+    // First test 
     /*pid_t parent_pid;
     int i = 0;
     fprintf(stdout, "Before REACTION %i\n", parent_pid=(int)getpid());
@@ -42,11 +42,11 @@ int main() {
     } else {
          s += 2.72;
         fprintf(fp, "Child: %i s=%g & s=%lf fp=%u\n", (int)getpid(), s, s, fp);        
-    } */
+    }*/
 
-    // Lab. 2 part
+    // Lab. 2 part !
 
-    /* pid_t child_pid;
+    /*pid_t child_pid;
     pid_t parent_pid;
 
     fprintf(stdout, "Before REACTION %i\n", parent_pid=(int)getpid());
@@ -58,9 +58,9 @@ int main() {
 
     while(1) {
 
-    } */
+    }*/
 
-    // Lab. 3 part
+    // Lab. 3 part !
 
     pid_t ppid;
     ppid = getpid();
