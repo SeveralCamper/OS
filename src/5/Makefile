@@ -16,13 +16,15 @@ $(TARGET): ../../obj/doubly_linked_lists.o
 
 list_lib.a: ../../obj/doubly_linked_lists.o ../../obj/main.o
 	$(CC) $(CFLAGS) -shared ../../obj/*.o -o liblist_functions.so
-	$(CC) $(CFLAGS) ../../obj/main.o -L.  -o main
+	$(CC) $(CFLAGS) ../../obj/*.o -L. -llist_functions -o main
 	ar rcs $@ $^
 	ranlib $@
+	rm ../../obj/main.o
+	rm ../../obj/doubly_linked_lists.o
 
 clean:	
 	rm -rf $(TARGET) file.bin
-	rm -rf *.o *.so *.a fizz *.gc* *.info report *.out *.gcda *.so *.gcno *.info
+	rm -rf *.o *.so *.a fizz *.gc* *.info report *.out *.gcda *.so *.gcno *.info main
 	rm -rf ../../obj/*.o ../../obj/*.so ../../obj/*.a ../../obj/*.out
 
 rebuild: clean all
