@@ -6,17 +6,17 @@ TARGET = ../../bin/doubly_linked_lists
 all: list_lib.a
 
 $(TARGET): ../../obj/doubly_linked_lists.o
-	$(CC) $(CFLAGS) ../../obj/doubly_linked_lists.o -o $@
+	$(CC) $(CFLAGS) ../../obj/doubly_linked_lists.o $(LIBS) -o $@
 
 ../../obj/doubly_linked_lists.o: doubly_linked_lists.c
-	$(CC) $(CFLAGS) -fPIC -c doubly_linked_lists.c -o $@
+	$(CC) $(CFLAGS) -fPIC -c doubly_linked_lists.c $(LIBS) -o $@
 
 ../../obj/main.o: main.c
 	$(CC) $(CFLAGS) -c main.c -o $@
 
 list_lib.a: ../../obj/doubly_linked_lists.o ../../obj/main.o
-	$(CC) $(CFLAGS) -shared ../../obj/*.o -o liblist_functions.so
-	$(CC) $(CFLAGS) ../../obj/*.o -L. -llist_functions -o main
+	$(CC) $(CFLAGS) -shared ../../obj/*.o $(LIBS) -o liblist_functions.so
+	$(CC) $(CFLAGS) ../../obj/*.o -L. -llist_functions $(LIBS) -o main
 	ar rcs $@ $^
 	ranlib $@
 	rm ../../obj/main.o
