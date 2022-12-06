@@ -5,16 +5,11 @@
 #define ERROR_CREATE_THREAD -11
 #define ERROR_JOIN_THREAD -12
 
-char *enter_PID_process(int pid) {
-	int j = 0, i = 6;
-	char *comand = NULL;
-	comand = realloc(comand, (i) * sizeof(char));
-	comand[0] = 'p';
-	comand[1] = 's';
-	comand[2] = ' ';
-	comand[3] = '-';
- 	comand[4] = 'p';
-	comand[5] = ' ';
+char *enter_PID_process(int pid, int string_length, char *string) {
+	int j = 0, i = string_length;
+	char *command = NULL;
+	command = realloc(command, (i) * sizeof(char));
+	strcpy(command, string);
 	int *res_arr = NULL;
 	while(pid != 0) {
 		res_arr = realloc(res_arr, (j) * sizeof(int));
@@ -24,13 +19,17 @@ char *enter_PID_process(int pid) {
 	}
 
 	for (int k = j - 1; k >= 0; k--) {
-		comand = realloc(comand, (i) * sizeof(char));
-		comand[i] = res_arr[k] + '0';
+		command = realloc(command, (i) * sizeof(char));
+		command[i] = res_arr[k] + '0';
 		i++;
-
 	}
+
+	for (int i = 0; i < string_length + 4; i++) {
+		printf("%c", command[i]);
+	}
+	printf("\n");
 	
-	return comand;
+	return command;
 }
 
 void API_contract() {
@@ -43,7 +42,7 @@ void API_contract() {
 	printf("3) Check procces by PID\n");
 	printf("4) Generate new process\n");
 	printf("5) Show process tree with PID\n");
-	printf("6) Launching a Third Party Program\n");
+	printf("6) Delete process by PID\n");
 	printf("0) Exit.\n");
 	while (1) {
 		if (scanf("%d%c", &API_flag, &c) == 2 && (API_flag > -1 && API_flag < 7) && (c == '\n') && (c != EOF)) {
@@ -70,8 +69,8 @@ void API_contract() {
 							printf("Please, enter process PID or: \n");
 							printf("1) Check all running process\n");
 							printf("2) Check all process in directory\n");
+							printf("3) Check process by pid\n");
 							if (scanf("%d%c", &pid, &c2) == 2 && (pid > 0) && (c2 == '\n') && (c2 != EOF)) {
-								printf("%d!\n", pid);
 								switch (pid) {
 									case 1:
 										printf("All running process:\n");
@@ -81,8 +80,16 @@ void API_contract() {
 										printf("All procces in directory:\n");
 										system("ps -T");
 										break;
+									case 3:
+										printf("Check process by pid:\n");
+										printf("Enter process PID: ");
+										int PID = 0;
+										if (scanf("%d%c", &PID, &c2) == 2 && (PID > 0) && (c2 == '\n') && (c2 != EOF)) {
+											char *command = "ps -p ";
+											system(enter_PID_process(PID, 6, command));
+										}
+										break;
 									default:
-										system(enter_PID_process(pid));
 										break;
 								}
 							} else {
@@ -105,8 +112,17 @@ void API_contract() {
 						fflush(NULL);
 						break;
 					case 6:
-						printf("Launching a Third Party Program:\n");
-						system("make run_child");
+						printf("Delete Process by PID:\n");
+						printf("Enter process PID: ");
+						int PID = 0;
+						if (scanf("%d%c", &PID, &c2) == 2 && (PID > 0) && (c2 == '\n') && (c2 != EOF)) {
+							char *command = "kill ";
+							system(enter_PID_process(PID, 5, command));
+						}
+						fflush(NULL);
+						break;
+					case 0:
+						API_flag = 0;
 						break;
 				}		
 				fflush(NULL);
@@ -116,7 +132,7 @@ void API_contract() {
 				printf("3) Check procces by PID\n");
 				printf("4) Generate new process\n");
 				printf("5) Show process tree with PID\n");
-				printf("6) Launching a Third Party Program\n");
+				printf("6) Delete process by PID\n");
 				printf("0) Exit.\n");
 			} else {
 				printf("\033c");
@@ -127,10 +143,6 @@ void API_contract() {
 			break;
 		}
 	}
-}
-
-void processes_initialization() {
-
 }
 
 int main() {

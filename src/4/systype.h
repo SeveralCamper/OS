@@ -9,7 +9,7 @@
 #include <sys/types.h>
 
 void API_contract();
-void processes_initialization();
+char *enter_PID_process(int pid, int string_length, char *string);
 
 #endif //  SRC_SYSTYPE_H_
 
