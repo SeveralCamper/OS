@@ -22,6 +22,9 @@ private:
     Ui::MainWindow *ui;
     Controller *controller;
 
+    std::vector<std::string> string_collection;
+
+    void changeInfoTable();
     void switch_program_model(int signal);
     void flash_signal_to_controller(int signal, int PID, std::string command);
 

@@ -10,15 +10,6 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::MainWindow(QWidget *parent, Controller *controller)
     : QMainWindow(parent), ui(new Ui::MainWindow), controller(controller) {
   ui->setupUi(this);
-
-  /* connect(ui->pushButton_CheckAllProcess, SIGNAL(clicked()), this, SLOT(on_pushButton_CheckAllProcess_clicked()));
-  connect(ui->pushButton_CheckAllDirProcess, SIGNAL(clicked()), this, SLOT(on_pushButton_CheckAllDirProcess_clicked()));
-  connect(ui->pushButton_ShowProcessTree, SIGNAL(clicked()), this, SLOT(on_pushButton_ShowProcessTree_clicked()));
-  connect(ui->pushButton_GenerateProcess, SIGNAL(clicked()), this, SLOT(on_pushButton_GenerateProcess_clicked()));
-  connect(ui->pushButton_CheckPID, SIGNAL(clicked()), this, SLOT(on_pushButton_CheckPID_clicked()));
-  connect(ui->pushButton_DeletePID, SIGNAL(clicked()), this, SLOT(on_pushButton_DeletePID_clicked()));
-  connect(ui->pushButton_SwitchToTaskManager, SIGNAL(clicked()), this, SLOT(on_pushButton_SwitchToTaskManager_clicked()));
-  connect(ui->pushButton_SwitchToELFReader, SIGNAL(clicked()), this, SLOT(on_pushButton_SwitchToELFReader_clicked())); */
 }
 
 MainWindow::~MainWindow() {
@@ -26,7 +17,8 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::flash_signal_to_controller(int signal, int PID, std::string command) {
-    controller->TakeSignal(signal, PID, command);
+    controller->TakeSignal(command);
+    changeInfoTable();
 }
 
 void MainWindow::switch_program_model(int signal) {
@@ -40,39 +32,58 @@ void MainWindow::switch_program_model(int signal) {
 }
 
 void MainWindow::on_pushButton_CheckAllProcess_clicked() {
+    ui->textBrowser_Output->clear();
     flash_signal_to_controller(1, -1, "ps -e");
-    ui->textBrowser_Output->append("All Process");
 }
 
 void MainWindow::on_pushButton_CheckAllDirProcess_clicked() {
+    ui->textBrowser_Output->clear();
     flash_signal_to_controller(2, -1, "ps -T");
-    ui->textBrowser_Output->append("CheckAllDirProcess");
 }
 
 void MainWindow::on_pushButton_ShowProcessTree_clicked() {
+    ui->textBrowser_Output->clear();
     flash_signal_to_controller(3, -1, "pstree -p");
-    ui->textBrowser_Output->append("ShowProcessTree");
 }
 
 void MainWindow::on_pushButton_GenerateProcess_clicked() {
-    flash_signal_to_controller(4, -1, "");
-    ui->textBrowser_Output->append("GenerateProcess");
+    ui->textBrowser_Output->clear();
+    char *pid = nullptr;
+    int pid_1 = (int)getpid(), number = 0, iter = 0;
+    while (pid_1 % 10 > 0) {
+        std::cout << "!" << pid_1 << std::endl;
+        number = pid_1 % 10;
+        pid_1 = pid_1 / 10;
+        char c = number + '0';
+        pid = (char *) realloc(pid, iter + 1);
+        pid[iter] = c;
+        iter++;
+    }
+    ui->textBrowser_Output->append(pid);
+    free(pid);
+    pid = nullptr;
 }
 
 void MainWindow::on_pushButton_CheckPID_clicked() {
+    ui->textBrowser_Output->clear();
     std::string command = "ps -p ";
     command += ui->lineEdit_PID->text().toStdString();
-    // std::cout << command << std::endl;
     flash_signal_to_controller(5, ui->lineEdit_PID->text().toInt(), command);
-    ui->textBrowser_Output->append("CheckPID");
 }
 
 void MainWindow::on_pushButton_DeletePID_clicked() {
+    ui->textBrowser_Output->clear();
     std::string command = "kill ";
     command += ui->lineEdit_PID->text().toStdString();
-    // std::cout << command << std::endl;
     flash_signal_to_controller(6, ui->lineEdit_PID->text().toInt(), command);
-    ui->textBrowser_Output->append("DeletePID");
+}
+
+void MainWindow::changeInfoTable() {
+    controller->ReadInfoFromFile();
+    string_collection = controller->getStringCollection();
+    for (int i = 0; i < (int) string_collection.size(); i++) {
+        ui->textBrowser_Output->append(string_collection[i].c_str());
+    }
 }
 
 void MainWindow::on_pushButton_SwitchToTaskManager_clicked() {

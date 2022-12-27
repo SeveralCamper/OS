@@ -1,58 +1,32 @@
 #include "model.h"
 
-void ModelTaskManager::TakeSignal(int signal, int PID, std::string command) {
-    std::string command_1 = "ps -p ";
-    std::string command_2 = "kill ";
-    switch(signal) {
-        case 1:
-            std::cout << std::endl;
-            std::cout << "Show all process:" << std::endl;
-            std::cout << std::endl;
-            ExecuteSignal(command);
-            break;
-        case 2:
-            std::cout << std::endl;
-            std::cout << "Show all process in directory:" << std::endl;
-            std::cout << std::endl;
-            ExecuteSignal(command);
-            break;
-        case 3:
-            std::cout << std::endl;
-            std::cout << "Show process tree with PID:" << std::endl;
-            std::cout << std::endl;
-            ExecuteSignal(command);
-            break;
-        case 4:
-            std::cout << std::endl;
-            std::cout << "Shown own process:" << std::endl;
-            std::cout << "Your porcess PID is:" << (int)getpid() << std::endl;
-            std::cout << std::endl;
-            break;
-        case 5:
-            // std::system("whoami");
-            std::cout << std::endl;
-            std::cout << "Show process by PID:" << std::endl;
-            std::cout << std::endl;
+void ModelTaskManager::TakeSignal(std::string command) {
+    ExecuteSignal(command);
+}
 
-            ExecuteSignal(command);
-            break;
-        case 6:
-            std::cout << std::endl;
-            std::cout << "Delete process by PID:" << std::endl;
-            std::cout << std::endl;
-            ExecuteSignal(command);
-            break;
-        case 0:
-            exit(0);
-            break;
-        default:
-            break;
+void ModelTaskManager::ReadInfoFromFile() {
+    std::ifstream fin;
+    std::string tmp_string;
+    fin.open(file_path);
+
+    std::cout << "!!!!" << std::endl;
+
+    string_collection.clear();
+
+    if (!fin.is_open()) {
+        std::cout << "Cannot open the file!" << std::endl;
+    } else {
+        while (!fin.eof()) {
+            tmp_string = "";
+            std::getline(fin, tmp_string);
+            string_collection.push_back(tmp_string);
+        }
     }
+    fin.close();
 }
 
 void ModelTaskManager::ExecuteSignal(std::string signal) {
     signal += " >> ../TaskManager/info.txt";
-    // std::cout << signal << std::endl;
     system("> ../TaskManager/info.txt");
     system(signal.c_str());
 }
@@ -65,10 +39,18 @@ void ModelTaskManager::SetPID(int new_PID) {
     current_PID = new_PID;
 }
 
+void ModelTaskManager::SetStringCollection(std::vector<std::string> new_collection) {
+    string_collection = new_collection;
+}
+
 int ModelTaskManager::GetSignal() {
     return signal_;
 }
 
 int ModelTaskManager::GetPID() {
     return current_PID;
+}
+
+std::vector<std::string> ModelTaskManager::getStringCollection() {
+    return string_collection;
 }
