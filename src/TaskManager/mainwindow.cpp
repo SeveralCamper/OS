@@ -48,13 +48,13 @@ void MainWindow::on_pushButton_ShowProcessTree_clicked() {
 
 void MainWindow::on_pushButton_GenerateProcess_clicked() {
     ui->textBrowser_Output->clear();
+    char c;
     char *pid = nullptr;
     int pid_1 = (int)getpid(), number = 0, iter = 0;
-    while (pid_1 % 10 > 0) {
-        std::cout << "!" << pid_1 << std::endl;
+    while (pid_1 % 10 != 0) {
         number = pid_1 % 10;
         pid_1 = pid_1 / 10;
-        char c = number + '0';
+        c = number + '0';
         pid = (char *) realloc(pid, iter + 1);
         pid[iter] = c;
         iter++;

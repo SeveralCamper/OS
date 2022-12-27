@@ -8,9 +8,6 @@ void ModelTaskManager::ReadInfoFromFile() {
     std::ifstream fin;
     std::string tmp_string;
     fin.open(file_path);
-
-    std::cout << "!!!!" << std::endl;
-
     string_collection.clear();
 
     if (!fin.is_open()) {
