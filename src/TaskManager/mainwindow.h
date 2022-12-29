@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "controller.h"
+#include "elfreader.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -21,21 +22,22 @@ public:
 private:
     Ui::MainWindow *ui;
     Controller *controller;
+    ElfReader *elfWindow;
 
     std::vector<std::string> string_collection;
 
     void changeInfoTable();
     void switch_program_model(int signal);
-    void flash_signal_to_controller(int signal, int PID, std::string command);
+    void flash_signal_to_controller(std::string command);
 
  private slots:
     void on_pushButton_CheckAllProcess_clicked();
     void on_pushButton_CheckAllDirProcess_clicked();
     void on_pushButton_ShowProcessTree_clicked();
-    void on_pushButton_GenerateProcess_clicked();
     void on_pushButton_CheckPID_clicked();
     void on_pushButton_DeletePID_clicked();
     void on_pushButton_SwitchToTaskManager_clicked();
     void on_pushButton_SwitchToELFReader_clicked();
+    void on_pushButton_CheckOwnProcces_clicked();
 };
 #endif // MAINWINDOW_H

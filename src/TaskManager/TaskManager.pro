@@ -10,16 +10,19 @@ CONFIG += c++17
 
 SOURCES += \
     controller.cpp \
+    elfreader.cpp \
     main.cpp \
     mainwindow.cpp \
     model.cpp
 
 HEADERS += \
     controller.h \
+    elfreader.h \
     mainwindow.h \
     model.h
 
 FORMS += \
+    elfreader.ui \
     mainwindow.ui
 
 # Default rules for deployment.

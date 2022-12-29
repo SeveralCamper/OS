@@ -16,37 +16,39 @@ MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::flash_signal_to_controller(int signal, int PID, std::string command) {
+void MainWindow::flash_signal_to_controller(std::string command) {
     controller->TakeSignal(command);
     changeInfoTable();
 }
 
 void MainWindow::switch_program_model(int signal) {
     if (signal == 0) {
-        ui->pushButton_SwitchToTaskManager->setStyleSheet("background-color: rgb(64,195,208);");
-        ui->pushButton_SwitchToELFReader->setStyleSheet("background-color: rgb(215, 215, 215);");
     } else {
-        ui->pushButton_SwitchToTaskManager->setStyleSheet("background-color: rgb(215, 215, 215);");
-        ui->pushButton_SwitchToELFReader->setStyleSheet("background-color: rgb(64,195,208);");
+        hide();
+        if (elfWindow == nullptr) {
+            elfWindow = new ElfReader(nullptr, this, controller);
+        }
+        elfWindow->show();
     }
 }
 
 void MainWindow::on_pushButton_CheckAllProcess_clicked() {
     ui->textBrowser_Output->clear();
-    flash_signal_to_controller(1, -1, "ps -e");
+    flash_signal_to_controller("ps -e");
 }
 
 void MainWindow::on_pushButton_CheckAllDirProcess_clicked() {
     ui->textBrowser_Output->clear();
-    flash_signal_to_controller(2, -1, "ps -T");
+    flash_signal_to_controller("ps -T");
 }
 
 void MainWindow::on_pushButton_ShowProcessTree_clicked() {
     ui->textBrowser_Output->clear();
-    flash_signal_to_controller(3, -1, "pstree -p");
+    flash_signal_to_controller("pstree -p");
 }
 
-void MainWindow::on_pushButton_GenerateProcess_clicked() {
+
+void MainWindow::on_pushButton_CheckOwnProcces_clicked() {
     ui->textBrowser_Output->clear();
     char c;
     char *pid = nullptr;
@@ -68,14 +70,14 @@ void MainWindow::on_pushButton_CheckPID_clicked() {
     ui->textBrowser_Output->clear();
     std::string command = "ps -p ";
     command += ui->lineEdit_PID->text().toStdString();
-    flash_signal_to_controller(5, ui->lineEdit_PID->text().toInt(), command);
+    flash_signal_to_controller(command);
 }
 
 void MainWindow::on_pushButton_DeletePID_clicked() {
     ui->textBrowser_Output->clear();
     std::string command = "kill ";
     command += ui->lineEdit_PID->text().toStdString();
-    flash_signal_to_controller(6, ui->lineEdit_PID->text().toInt(), command);
+    flash_signal_to_controller(command);
 }
 
 void MainWindow::changeInfoTable() {
